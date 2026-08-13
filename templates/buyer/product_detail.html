@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ product.name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+    <!-- Product Image -->
+    <div class="col-md-5">
+
+        {% if product.image %}
+
+            <img
+                src="{{ product.image.url }}"
+                class="img-fluid rounded shadow"
+                alt="{{ product.name }}">
+
+        {% else %}
+
+            <div class="alert alert-secondary">
+
+                No image available.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    <!-- Product Details -->
+    <div class="col-md-7">
+
+        <h2>{{ product.name }}</h2>
+
+        <hr>
+
+        <p>{{ product.description }}</p>
+
+        <h3>£{{ product.price }}</h3>
+
+        <p>
+
+            <strong>Available Stock:</strong>
+
+            {{ product.stock }}
+
+        </p>
+
+        <p>
+
+            <strong>Store:</strong>
+
+            {{ product.store.name }}
+
+        </p>
+
+        <hr>
+
+        {% if user.is_authenticated %}
+
+            {% if user.groups.all.0.name == "Buyer" %}
+
+                {% if product.stock > 0 %}
+
+                    <a
+                        href="{% url 'add_to_cart' product.id %}"
+                        class="btn btn-success">
+
+                        Add to Cart
+
+                    </a>
+
+                {% else %}
+
+                    <div class="alert alert-danger">
+
+                        Out of Stock
+
+                    </div>
+
+                {% endif %}
+
+            {% else %}
+
+                <div class="alert alert-warning">
+
+                    Only buyers can purchase products.
+
+                </div>
+
+            {% endif %}
+
+        {% else %}
+
+            <div class="alert alert-warning">
+
+                Please log in to purchase this product.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<hr>
+
+<!-- Leave Review Button -->
+
+{% if user.is_authenticated %}
+
+    {% if user.groups.all.0.name == "Buyer" %}
+
+        {% if not existing_review %}
+
+            <a
+                href="{% url 'add_review' product.id %}"
+                class="btn btn-primary mb-4">
+
+                Leave a Review
+
+            </a>
+
+        {% else %}
+
+            <div class="alert alert-info">
+
+                You have already reviewed this product.
+
+            </div>
+
+        {% endif %}
+
+    {% endif %}
+
+{% endif %}
+
+<hr>
+
+<h3>Customer Reviews</h3>
+
+{% for review in reviews %}
+
+<div class="card mb-3 shadow-sm">
+
+    <div class="card-body">
+
+        <h5>
+
+            {{ review.reviewer.username }}
+
+        </h5>
+
+        <p>
+
+            <div class="mb-2">
+                <span class="fs-5 text-warning">
+                    {{ review.stars }}
+                </span>
+            </div>
+
+        </p>
+
+        {% if review.verified %}
+
+            <span class="badge bg-success">
+
+                Verified Purchase
+
+            </span>
+
+        {% else %}
+
+            <span class="badge bg-secondary">
+
+                Unverified Purchase
+
+            </span>
+
+        {% endif %}
+
+        <hr>
+
+        <p>
+
+            {{ review.comment }}
+
+        </p>
+
+    </div>
+
+</div>
+
+{% empty %}
+
+<div class="alert alert-info">
+
+    No reviews have been posted yet.
+
+</div>
+
+{% endfor %}
+
+{% endblock %}
