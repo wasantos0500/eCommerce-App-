@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card shadow">
+
+{% if product.image %}
+
+<img src="{{ product.image.url }}"
+     class="card-img-top"
+     style="height:400px;object-fit:cover;">
+
+{% endif %}
+
+<div class="card-body">
+
+<h2>
+
+{{ product.name }}
+
+</h2>
+
+<hr>
+
+<p>
+
+{{ product.description }}
+
+</p>
+
+<p>
+
+<strong>Price:</strong>
+
+£{{ product.price }}
+
+</p>
+
+<p>
+
+<strong>Stock:</strong>
+
+{{ product.stock }}
+
+</p>
+
+<p>
+
+<strong>Store:</strong>
+
+{{ product.store.name }}
+
+</p>
+
+<a href="{% url 'update_product' product.id %}"
+class="btn btn-warning">
+
+Edit
+
+</a>
+
+<a href="{% url 'product_list' %}"
+class="btn btn-secondary">
+
+Back
+
+</a>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+Leave Review
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<h2>
+
+Review
+
+{{ product.name }}
+
+</h2>
+
+<hr>
+
+<form method="POST">
+
+{% csrf_token %}
+
+{{ form.as_p }}
+
+<button class="btn btn-success">
+
+Submit Review
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+{% endblock %}
