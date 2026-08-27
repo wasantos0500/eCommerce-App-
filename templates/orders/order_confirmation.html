@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}
+Order Confirmation
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<h2>
+
+Thank You!
+
+</h2>
+
+<hr>
+
+<p>
+
+Your order has been placed successfully.
+
+</p>
+
+<p>
+
+<strong>
+
+Order Number:
+
+</strong>
+
+#{{ order.id }}
+
+</p>
+
+<hr>
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>Product</th>
+
+<th>Qty</th>
+
+<th>Price</th>
+
+<th>Subtotal</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for item in items %}
+
+<tr>
+
+<td>
+
+{{ item.product.name }}
+
+</td>
+
+<td>
+
+{{ item.quantity }}
+
+</td>
+
+<td>£{{ item.price }}</td>
+
+<td>£{{ item.subtotal }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+<hr>
+
+<h4>
+
+Grand Total
+
+£{{ order.total_price }}
+
+</h4>
+
+<a
+href="{% url 'browse_products' %}"
+class="btn btn-primary">
+
+Continue Shopping
+
+</a>
+
+</div>
+
+</div>
+
+{% endblock %}
