@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Shopping Cart{% endblock %}
+
+{% block content %}
+
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+    <div>
+        <h1 class="mb-1">Shopping Cart</h1>
+        <p class="text-muted mb-0">Review your items before proceeding to checkout.</p>
+    </div>
+    <a href="{% url 'browse_products' %}" class="btn btn-outline-primary">
+        Continue Shopping
+    </a>
+</div>
+
+{% if items %}
+
+<div class="card border-0 shadow-sm overflow-hidden">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0 cart-table">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col" class="text-end">Subtotal</th>
+                    <th scope="col"><span class="visually-hidden">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <a class="fw-semibold text-decoration-none" href="{% url 'public_product_detail' item.product.id %}">
+                            {{ item.product.name }}
+                        </a>
+                    </td>
+                    <td>
+                        <div class="quantity-control" aria-label="Quantity for {{ item.product.name }}">
+                            <a href="{% url 'decrease_quantity' item.product.id %}"
+                               class="btn btn-sm btn-outline-secondary"
+                               aria-label="Decrease {{ item.product.name }} quantity">&minus;</a>
+                            <span class="quantity-value">{{ item.quantity }}</span>
+                            <a href="{% url 'increase_quantity' item.product.id %}"
+                               class="btn btn-sm btn-outline-secondary"
+                               aria-label="Increase {{ item.product.name }} quantity">&plus;</a>
+                        </div>
+                    </td>
+                    <td class="text-end fw-semibold">£{{ item.subtotal }}</td>
+                    <td class="text-end">
+                        <a href="{% url 'remove_from_cart' item.product.id %}"
+                           class="btn btn-outline-danger btn-sm">Remove</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-footer bg-white p-4">
+        <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
+            <a href="{% url 'clear_cart' %}" class="btn btn-outline-danger">
+                Empty Cart
+            </a>
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+                <p class="fs-4 fw-bold mb-0">Total: £{{ total }}</p>
+                <a href="{% url 'checkout' %}" class="btn btn-success btn-lg">
+                    Proceed to Checkout
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="empty-state card border-0 shadow-sm text-center">
+    <div class="card-body p-5">
+        <div class="empty-state-icon" aria-hidden="true">🛒</div>
+        <h2 class="h4 mt-3">Your shopping cart is empty</h2>
+        <p class="text-muted">Browse the catalogue to find something you’ll love.</p>
+        <a href="{% url 'browse_products' %}" class="btn btn-primary mt-2">
+            Browse Products
+        </a>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

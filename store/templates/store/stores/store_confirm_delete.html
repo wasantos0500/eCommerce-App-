@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}
+Delete Store
+{% endblock %}
+
+{% block content %}
+
+<div class="card border-danger">
+
+<div class="card-body">
+
+<h2 class="text-danger">
+
+Delete Store
+
+</h2>
+
+<hr>
+
+<p>
+
+Are you sure you want to delete
+
+<strong>
+
+{{ store.name }}
+
+</strong>
+
+?
+
+</p>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<button
+class="btn btn-danger">
+
+Delete
+
+</button>
+
+<a
+href="{% url 'dashboard' %}"
+class="btn btn-secondary">
+
+Cancel
+
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+{% endblock %}

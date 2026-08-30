@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}
+External Posts
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container py-4">
+
+    <div class="mb-4">
+        <h1>External Posts</h1>
+
+        <p class="text-muted">
+            Posts retrieved from the JSONPlaceholder API.
+        </p>
+    </div>
+
+
+    <!-- Filter posts by JSONPlaceholder user ID. -->
+    <form method="get" class="mb-4">
+
+        <div class="row g-2 align-items-end">
+
+            <div class="col-md-4">
+
+                <label for="user_id" class="form-label">
+                    User ID
+                </label>
+
+                <input
+                    type="number"
+                    id="user_id"
+                    name="user_id"
+                    class="form-control"
+                    min="1"
+                    value="{{ selected_user_id|default:'' }}"
+                    placeholder="Enter a user ID"
+                >
+
+            </div>
+
+            <div class="col-auto">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Filter Posts
+                </button>
+
+            </div>
+
+            <div class="col-auto">
+
+                <a
+                    href="{% url 'external_posts' %}"
+                    class="btn btn-outline-secondary"
+                >
+                    Show All
+                </a>
+
+            </div>
+
+        </div>
+
+    </form>
+
+
+    {% if selected_user_id %}
+
+        <div class="alert alert-info">
+            Showing posts belonging to User {{ selected_user_id }}.
+        </div>
+
+    {% endif %}
+
+
+    {% if posts %}
+
+        <div class="row">
+
+            {% for post in posts %}
+
+                <div class="col-md-6 mb-4">
+
+                    <div class="card h-100 shadow-sm">
+
+                        <div class="card-body">
+
+                            <h5 class="card-title">
+                                {{ post.title }}
+                            </h5>
+
+                            <p class="card-text">
+                                {{ post.body }}
+                            </p>
+
+                        </div>
+
+                        <div class="card-footer">
+
+                            <small class="text-muted">
+                                User {{ post.userId }}
+                                |
+                                Post {{ post.id }}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="alert alert-warning">
+            No external posts were found.
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
